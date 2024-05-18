@@ -1,0 +1,28 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create a new token using controller username/password
+      awx.awx.token:
+        description: 'Creating token to test controller jobs'
+        scope: "write"
+        state: present
+        controller_host: controller.lab.example.com
+        controller_username: admin
+        controller_password: redhat
+      register: out
+    - debug: var=out['ansible_facts']['controller_token']['token']
+    - awx.awx.export:
+        all: True
+        controller_host: controller.lab.example.com
+        controller_oauthtoken: "{{ out['ansible_facts']['controller_token']['token'] }}"
+      register: a2
+    - debug: var=a2
+    - name: Add project
+      awx.awx.project:
+        name: "Foo"
+        description: "Foo bar project"
+        organization: "Default"
+        state: present
+        controller_host: controller.lab.example.com
+        #controller_config_file: "/home/student/controller/tower_cli.cfg"
+        controller_oauthtoken: "{{ out['ansible_facts']['controller_token']['token'] }}" 

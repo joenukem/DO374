@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Add Credential with Custom Credential Type
+      ansible.controller.credential:
+        name: Workshop Credential
+        credential_type: MyCloudCredential
+        organization: Default
+        controller_username: admin
+        controller_password: redhat
+        controller_host: https://controller.lab.example.com
+
