@@ -1,6 +1,6 @@
 ansible-navigator:
    execution-environment:
-      image: hub.lab.example.com/ee-minimal-rhel8 
+      image: hub.lab.example.com/ansible-automation-platform-22/ee-supported-rhel8:latest
    playbook-artifact: 
      enable: false
    mode: stdout

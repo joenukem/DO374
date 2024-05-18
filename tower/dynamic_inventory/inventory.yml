@@ -1,0 +1,6 @@
+plugin: awx.awx.controller
+host: controller.lab.example.com
+username: admin
+password: redhat
+inventory_id: 
+
