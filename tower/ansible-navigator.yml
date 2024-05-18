@@ -1,0 +1,6 @@
+ansible-navigator:
+   execution-environment:
+      image: hub.lab.example.com/ee-minimal-rhel8 
+   playbook-artifact: 
+     enable: false
+   mode: stdout
