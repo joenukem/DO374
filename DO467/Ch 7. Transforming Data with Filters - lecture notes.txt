@@ -1,0 +1,69 @@
+Processing Variables Using Filters
+
+Ansible Filters
+Providing Default Variable Values
+Variable Types
+Manipulating Lists/Extracting List Elements
+Modifying the Order of List Elements
+Merging Lists
+Operating on Lists as Sets
+Manipulating Dictionaries
+Joining Dictionaries
+Converting Dictionaries
+
+Hashing, Encoding, and Manipulating Strings
+Hashing Strings and Passwords
+Encoding Strings
+Formatting Text
+Replacing Text
+
+Manipulating Data Structures
+
+Data Structure Queries
+Parsing and Encoding Data Structures
+
+
+
+
+Templating External Data Using Lookups
+Lookup Plug-ins
+
+Calling Lookup Plug-ins
+Selecting Lookup Plug-ins
+Reading the Contents of Files
+Applying Data with a Template
+Reading Command Output in the Execution Environment
+Getting Content from a URL
+Getting Information from the Kubernetes API
+Using Custom Lookup Plug-ins
+Handling Lookup Errors
+
+Implementing Advanced Loops
+Comparing Loops and Lookup Plug-ins
+
+Iterating over a List of Lists
+Iterating over Nested Lists
+Iterating over a Dictionary
+Iterating over a File Globbing Pattern
+Retrying a Task
+
+
+Using Filters to Work with Network Addresses
+Gathering and Processing Networking Information
+Network Information Filters
+Testing IP Addresses
+Filtering Data
+Manipulating IP Addresses
+Reformatting or Calculating Network Information
+
+
+
+
+
+
+
+
+
+
+
+

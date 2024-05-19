@@ -1,0 +1,16 @@
+---
+- name: Delegation common example, remove web server from load balancer before stopping it
+  hosts: demo.lab.example.com
+  tasks:
+  - name: Remove the server from HAProxy
+    community.general.haproxy:
+      state: disabled
+      host: "{{ ansible_facts['fqdn'] }}"
+      socket: /var/lib/haproxy/stats
+    delegate_to: "{{ item }}"
+    loop: "{{ groups['lbservers'] }}"
+
+  - name: Make sure Apache HTTPD is stopped
+    ansible.builtin.service:
+    name: httpd
+    state: stopped

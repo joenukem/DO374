@@ -1,0 +1,36 @@
+---
+- name: Install the packages on the web servers
+  hosts: localhost
+  tasks:
+
+  - name: Ensure the packages are installed
+    ansible.builtin.yum:
+     name:
+     - httpd
+     - mod_ssl
+     - httpd-tools
+     - mariadb-server
+     state: present
+
+#much slower
+
+- name: Ensure the packages are installed
+ansible.builtin.yum:
+name: "{{ item }}"
+state: present
+loop:
+- httpd
+- mod_ssl
+- httpd-tools
+- mariadb-server
+
+# Not all modules accept lists
+tasks:
+- name: Ensure the services are started
+ansible.builtin.service:
+name: "{{ item }}"
+state: started
+enabled: true
+loop:
+- httpd
+- mariadb

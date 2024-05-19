@@ -1,0 +1,16 @@
+---
+- name: Delegate task to another host
+  hosts: demo.lab.example.com
+  tasks:
+  - name: Get system information
+    ansible.builtin.command: uname -a
+    register: managed_host
+
+  - ansible.builtin.debug: var:=managed_host
+
+  - name: Get system information
+    ansible.builtin.command: uname -a
+    delegate_to: host.lab.example.com
+    register: delegated
+
+  - ansible.builtin.debug: var=delegated

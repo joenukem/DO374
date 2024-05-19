@@ -1,0 +1,86 @@
+Optimizing the Infrastructure
+- We are really slow - so Each release of automation execution environments adds enhancements and improvements.
+
+- Ansible relies heavily on network communication and the
+transfer of data. High latency connections or low bandwidth between the control node and its managed hosts degrade the execution time of playbooks.
+
+
+Disabling Fact Gathering
+- Each play has a hidden task which runs first, using the ansible.builtin.setup module to
+collect facts from each host.
+- sometimes can use inventory_hostname instead of ansible_facts['fqdn']
+
+Reusing Gathered Facts with Fact Caching
+- Fact caching is always enabled.
+- memory plugin is default, allows for multiple plays in the same playbook to use the same facts
+- [defaults] gathering=smart - second play in a playbook will resuse and not automatically gather facts
+- Fact caching also works on automation controller, 
+- if that checkbox is not selected, automation controller uses the default memory fact caching plug- in, which only caches facts during a particular job run.
+- to avoid stale cache data, can always run the setup module to refresh facts
+
+Limiting Fact Gathering
+- ansible.builtin.setup module as an explicit task with its gather_subset option, faster than getting all the facts
+- subsets include all, min, hardware, network, virtual, ohai, and facter.
+
+
+
+Increasing Parallelism
+When Ansible is running a play, it runs the first task on every host in the current batch, and then runs the second task on every host in the current batch, and so on until the play completes. The forks parameter controls how many connections Ansible can have active at the same time. By default, this is set to 5, which means that even if there are 100 hosts to process on the current task, Ansible only communicates with them in groups of five. After it has communicated with all 100 hosts, Ansible moves to the next task.
+- set forks in ansible.cfg for the maximum hosts to run a task in parralell [defaults] forks=100
+
+
+Avoiding Loops with the Package Manager Modules
+- some modules accept lists of imputs.
+- this can be used to avoid using a loop to invoke the same task over and over
+- demo
+
+
+Efficiently Copying Files to Managed Hosts
+- generally more efficient to use the ansible.posix.synchronize module to copy large numbers of files to managed hosts. This module uses rsync in the background and is usually faster than the ansible.builtin.copy module.
+
+Using Templates
+comparison of using line in file to templates
+
+
+
+Enabling Pipelining
+- environement varaible for  ansible-navigator
+on each host
+[root@host ~]# visudo
+...output omitted...
+Defaults !requiretty
+...output omitted...
+
+Profiling Playbook Execution with Callback Plug-ins
+timer plug-in shows the playbook
+execution time in the output of the ansible-navigator command.
+
+[defaults]
+callbacks_enabled=timer, profile_tasks, cgroup_perf_recap
+
+ansible-navigator doc -t callback -l
+
+
+Timing Tasks and Roles
+- timer plugin
+- profile_tasks/profile_roles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+---
+- name: Delegate task to another host
+  hosts: demo.lab.example.com
+  tasks:
+  - name: Access the web service
+    uri:
+      url: http://{{ ansible_facts['fqdn'] }}
+      timeout: 5
+    delegate_to: test-client.example.com

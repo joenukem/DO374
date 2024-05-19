@@ -1,0 +1,20 @@
+Delegating Tasks and Facts
+Delegating Tasks
+Delegating to the Execution Environment
+Delegating Facts
+
+
+
+Configuring Parallelism
+Configure Parallelism in Ansible Using Forks
+Running Batches of Hosts Through the Entire Play
+
+Managing Rolling Updates
+Controlling Batch Size
+Setting a Fixed Batch Size
+Setting Batch Size as a Percentage
+Setting Batch Sizes to Change During the Play
+Aborting the Play
+Specifying Failure Tolerance
+Running a Task Once
+

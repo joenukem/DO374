@@ -1,0 +1,50 @@
+Writing Ansible Content Collections
+Developing Ansible Content Collections
+Selecting a Namespace for Collections
+Creating the Collection Directory Structure
+Adding Content to a Collection
+Updating Collection Metadata
+Declaring Collection Dependencies
+Building Collections
+Validating and Testing Collections
+Publishing Collections
+
+
+Building a Custom Automation Execution Environment
+Deciding When to Create a Custom Automation Execution Environment
+Preparing for a New Automation Execution Environment
+Declaring the Ansible Content Collections to Install
+Declaring Python Packages
+Declaring RPM Packages
+Building a New Automation Execution Environment
+Interacting with the Build Process
+Adjusting the Build Arguments and Base Image
+Modifying the Containerfile File
+Building the Execution Environment Image
+
+
+
+Validating a Custom Execution Environment
+Testing Automation Execution Environments Locally
+Running a Test Playbook
+Providing Authentication Credentials
+Automation Controller Machine Credentials
+Automation Content Navigator Authentication
+Sharing an Automation Execution Environment from Private Automation Hub
+
+
+Using Custom Content Collections and Execution Environments in Automation Controller
+Using Custom Collections with Existing Execution Environments
+Preparing Ansible Projects for Automation Controller
+Storing Authentication Credentials for Collections
+Using Custom Automation Execution Environments with Automation Controller
+Storing Container Registry Credentials
+Configuring Automation Execution Environments
+Configuring the Default Automation Execution Environment for a Project
+Specifying an Automation Execution Environment in a Template
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+ansible-navigator:
+   execution-environment:
+      image: localhost/myee
+      environment-variables:
+        set:
+          ANSIBLE_PIPELINING: true
+   playbook-artifact: 
+     enable: false
+   mode: stdout
+

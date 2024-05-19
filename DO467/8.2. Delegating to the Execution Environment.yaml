@@ -1,0 +1,10 @@
+- hosts:
+  tasks:
+  - name: Get information about controller instance
+    ansible.builtin.uri:
+      url: https://{{ ansible_facts['fqdn'] }}/api/v2/ping/
+      method: GET
+      validate_certs: no
+      return_content: yes
+      delegate_to: localhost
+   register: controller_ping

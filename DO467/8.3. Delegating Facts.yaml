@@ -1,0 +1,13 @@
+- name: Delegate Fact Example
+hosts: localhost
+gather_facts: false
+tasks:
+- name: Set a fact in delegated task on demo
+ansible.builtin.set_fact:
+myfact: Where am I set?
+delegate_to: demo.lab.example.com
+delegate_facts: true
+- name: Display the facts from demo.lab.example.com
+ansible.builtin.debug:
+msg: "{{ hostvars['demo.lab.example.com']['myfact'] }}"
+
