@@ -1,0 +1,10 @@
+---
+- name: Tagging
+  hosts: localhost
+  tasks:
+
+   - debug: msg="Tag Green"
+     tags: green
+
+   - debug: msg="Tag Blue"
+     tags: blue
