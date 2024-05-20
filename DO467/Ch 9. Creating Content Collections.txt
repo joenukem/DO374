@@ -1,3 +1,5 @@
+- lecture 20
+
 Writing Ansible Content Collections
 Developing Ansible Content Collections
 Selecting a Namespace for Collections
@@ -9,6 +11,8 @@ Building Collections
 Validating and Testing Collections
 Publishing Collections
 
+- ge 15
+- lecture 25
 
 Building a Custom Automation Execution Environment
 Deciding When to Create a Custom Automation Execution Environment
@@ -22,7 +26,8 @@ Adjusting the Build Arguments and Base Image
 Modifying the Containerfile File
 Building the Execution Environment Image
 
-
+- ge 15
+- lecture 20
 
 Validating a Custom Execution Environment
 Testing Automation Execution Environments Locally
@@ -32,6 +37,8 @@ Automation Controller Machine Credentials
 Automation Content Navigator Authentication
 Sharing an Automation Execution Environment from Private Automation Hub
 
+- ge 15
+- lecture 20
 
 Using Custom Content Collections and Execution Environments in Automation Controller
 Using Custom Collections with Existing Execution Environments
@@ -43,6 +50,8 @@ Configuring Automation Execution Environments
 Configuring the Default Automation Execution Environment for a Project
 Specifying an Automation Execution Environment in a Template
 
+- ge 15
+- lab 20
 
 
 

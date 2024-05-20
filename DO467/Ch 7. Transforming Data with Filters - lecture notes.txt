@@ -1,34 +1,116 @@
 Processing Variables Using Filters
 
 Ansible Filters
+- Ansible applies variable values to playbooks and templates by using Jinja2 expressions
+- Some filters are provided by the Jinja2
+language; 
+- others are included with Red Hat Ansible Automation Platform as plug-ins. 
+- You can also create custom filters,
+- to use a filter in a Jinja2 expression, add a pipe (|) character after the variable name
+- can specify multiple filters in a pipeline
+
+
+
 Providing Default Variable Values
+- use the default filter to ignore an undefined variable or to provide a value to an
+undefined variable
+
+- demo
+- Each user in the list must define the name key. Additionally, each user in the list can optionally define the groups, system, shell, state, and remove keys.
+- If the groups key is not defined for the item variable, then do not generate an error and do not provide a value for the key.
+- If the system key is not defined for the item variable, then use the false Boolean value for the key. Pass a value of true to create a system user.
+- If the shell key is not defined for the item variable, then use the /bin/bash value for the key. You might pass a value of /sbin/nologin if you create a system user.
+- If the state key is not defined for the item variable, then use the present value for the key. Pass a value of false to remove the user.
+- If the remove key is not defined for the item variable, then use the false Boolean value for the key. Passing a value of true when removing a user is the equivalent of the userdel -r command.
+
+- demo
+- default filter only provides a value if a variable is not defined, be default
+- you might want to provide a value if the variable passed to the default filter is an empty string or
+evaluates to the false Boolean value., set value to TRUE
+
+- Because the regular expression is not found in the variable, the regex_search filter returns an empty string. The default filter is not used.
+- Although the regex_search filter returns an empty string, the default filter is used because it includes true.
+- Because the string evaluates to the false Boolean, the default filter is not used.
+- Although the string evaluates to the false Boolean, the default filter is used because it includes true.
+
 Variable Types
+- might need to convert strings to integers if they have been defined with quotes
+
+
+
 Manipulating Lists/Extracting List Elements
+- demo sum
+
 Modifying the Order of List Elements
+- reverse,sort
+
 Merging Lists
+- flatten
+
 Operating on Lists as Sets
+- unique
+The union filter returns a set with elements from both input sets.
+• The intersect filter returns a set with elements common to both sets.
+- The difference filter returns a set with elements from the first set that are not present in the
+second set
+
+
 Manipulating Dictionaries
+- dictionaries are not ordered in any way, 
+- but rather are just a collection of key-value pairs. 
+- can use filters to construct dictionaries and you can convert those dictionaries into lists,
+
 Joining Dictionaries
-Converting Dictionaries
+combine filter to join two dictionaries. Entries from the second dictionary have higher priority than entries from the first dictionary, as seen in the following task:
+
+Converting Dictionaries d
+dict2items filter to convert a dictionary to a list. Use the items2dict filter to convert a list to a dictionary
 
 Hashing, Encoding, and Manipulating Strings
+- compute checksums, create password hashes, and convert text to and from Base64 encoding
+
 Hashing Strings and Passwords
+- hash filter returns the hash value of the input string, using the provided hashing algorithm:
+
 Encoding Strings
+- b64encode filter to translate binary data to Base64, or translate Base64 encoded data back to binary data with the b64decode
+
 Formatting Text
+- lower, upper, or capitalize filters to enforce the case of an input string:
+
 Replacing Text
+- replace filter to replace all occurrences of a substring inside the input string:
 
 Manipulating Data Structures
+- Many data structures used by Ansible are in JSON format, convert ansible variables to and from these formats
+- demo 
 
 Data Structure Queries
+
+- Because the selectattr filter combined with the map filter frequently creates a list consisting of one item, you can use the first filter to select that item.
+- each entry defines a name key, you can select the entry
+for the Control Plane Execution Environment resource by using the selectattr filter.
+- After selecting the correct entry, you can use the map filter to display the value of any key in that
+entry,
+
+
+
 Parsing and Encoding Data Structures
+- Data structures serialize to JSON or YAML format with the to_json and to_yaml filters. Use
+to_nice_json and to_nice_yaml filters to obtain a formatted, human-readable output.
+- also from_json yaml
 
-
-
+- lab - 15 minutes
+- leccutre - 25 minutes
 
 Templating External Data Using Lookups
 Lookup Plug-ins
+- enable Ansible to use data from external sources, such as files and the shell environment.
 
 Calling Lookup Plug-ins
+- call lookup plug-ins with one of two Jinja2 template functions, lookup or query.
+- Both methods have a syntax that is similar to filters.
+
 Selecting Lookup Plug-ins
 Reading the Contents of Files
 Applying Data with a Template
@@ -38,23 +120,120 @@ Getting Information from the Kubernetes API
 Using Custom Lookup Plug-ins
 Handling Lookup Errors
 
+- lab 25
+- lecture 30 minutes
+
 Implementing Advanced Loops
-Comparing Loops and Lookup Plug-ins
+Using Loops and Lookup Plug-ins
+- The loop keyword loops over a flat list of items. When used with lookup plug-ins, you can construct more complex data in your lists for your loops.
+- loop keyword was introduced in Ansible 2.5. Before that, task iteration was implemented
+by using keywords that started with with_ and ended with the name of a lookup plug-in. The
+equivalent to loop in this syntax is with_list, and is designed for iteration over a simple flat list
+- demo same with and loop
+- According to the documentation, the with_* syntax is not
+deprecated and it should be valid for the foreseeable future. 
+
+
 
 Iterating over a List of Lists
-Iterating over Nested Lists
-Iterating over a Dictionary
-Iterating over a File Globbing Pattern
-Retrying a Task
 
+
+- The app_a_tmp_files, app_b_tmp_files, and app_c_tmp_files variables each contain
+a list of temporary files. The with_items keyword combines these three lists into a single list
+containing the entries from all three lists. It automatically performs one-level flattening of its list.
+
+- To refactor a with_items task to use the loop keyword, use the flatten filter
+- flatten filter accepts a levels argument, which specifies an integer number of levels to search for embedded lists. A levels=1, same as with
+- Because the loop keyword does not perform this implicit one-level flattening, it is not exactly equivalent to with_items
+- demo with vs loop
+
+Iterating over Nested Lists
+- Data from variable files, Ansible facts, and external services are often a composition of simpler
+data structures, such as lists and dictionaries. Consider the following users variable:
+- The users variable is a list. Each entry in the list is a dictionary with the name, password,
+authorized, mysql, and groups keys
+- authorized and groups keys define lists.
+- mysql key references another dictionary
+
+- processes a list of dictionaries, and each dictionary contains a key that refers to a list. 
+- To use the subelements filter, you must provide the name of a key on each dictionary that corresponds to a list
+- subelements filter creates a new list from the users variable data. Each item in the list is itself a two-element list. The first element contains a reference to each user. The second element contains a reference to a single entry from the authorized list for that user.
+- demo
+
+Iterating over a Dictionary
+- yaml
+- with_dict
+- loop | dict2items
+
+
+Iterating over a File Globbing Pattern
+- leglob lookup plug-in.
+- demo
+- To force a lookup plug-in to return a list of values instead of a string of comma-separated values, use the query keyword instead of the lookup keyword.
+- with_fileglob
+and query
+
+Retrying a Task
+- until directive implements a special kind of loop to specify that kind of condition.
+- demo
+
+- 20 exercise
+- 30 lecture
 
 Using Filters to Work with Network Addresses
 Gathering and Processing Networking Information
+- ansible.builtin.setup module, which automatically gathers facts at the start of many plays, collects a lot of network-related information from each managed host.
+- Selected Networking Facts - table
+- demo - selecting networking facts
+
 Network Information Filters
+- The ansible.utils.ipaddr filter 
+- can validate the syntax of IP addresses, 
+- filter out bad data, 
+- convert from VLSM subnet masks to CIDR subnet prefix notation, 
+- perform subnet math, 
+- or find the next usable address in a network range.
+
+- needs the netaddr Python module, provided by the python3-netaddr package in Red Hat Enterprise Linux 8.
+--alreay installed on ee
+
 Testing IP Addresses
+- with no arguments accepts a single value. If the value is an IP address, then the filter returns the IP address. If the value is not an IP address, then the filter returns false
+- demo
+
 Filtering Data
+- netmask demo
+- host
+- net
+- private
+- public
+--all remove www.redht.com ,excpept ipwrap
+-- use double filter to do this
+
+
 Manipulating IP Addresses
+- demo
+- address
+netmask
+prefix
+broadcast
+network
+revdns
+
+
 Reformatting or Calculating Network Information
+
+demo
+- 5 return 5th address on the network
+- reutrun usable range
+- determine if an address is usable on a network
+
+
+
+- 20
+- 25
+
+
 
 
 
