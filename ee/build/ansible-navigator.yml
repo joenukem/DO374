@@ -1,0 +1,5 @@
+ansible-navigator:
+   execution-environment:
+      image: quay.io/joeroyall/ee-community:latest
+   playbook-artifact: 
+     enable: false
