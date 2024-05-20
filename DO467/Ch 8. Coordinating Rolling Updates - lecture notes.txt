@@ -1,20 +1,139 @@
+- lecture 25 
+
 Delegating Tasks and Facts
 Delegating Tasks
-Delegating to the Execution Environment
-Delegating Facts
+- might need to perform one or more tasks on another host on behalf of the managed host. 
 
+ -  log in to a network device to change a DHCP configuration, 
+  - make sure that certain groups exist in an Active Directory domain, or communicate with the API of a service by
+ using tools that are not available on the managed host.
+- delegated host does not need to be listed in the Ansible inventory.
+- demo
+- demo ha proxy
+
+
+Delegating to the Execution Environment
+- delegate a task is to the execution environment, or localhost environment.
+- demo
+
+- The introduction of automation execution environments in Red Hat Ansible
+Automation Platform 2 changes how delegation to localhost works. With the
+ansible-navigator command, using delegate_to: localhost causes the
+module to run within the automation execution environmen
+
+
+Delegating Facts
+In an earlier example, the ansible_facts['fqdn'] fact was used in a task that was delegated
+to each of the load balancers. In that task, the fully qualified domain name (FQDN) for the
+managed host is used, not that of the current load balancer.
+
+- Using the delegate_facts directive on that task instructs Ansible
+to gather facts into the hostvars['demo.lab.example.com'] namespace for the delegated
+host, instead of the default hostvars['localhost'] namespace for the current managed
+host.
+
+demo
+
+- lab 20
+- lecture - 25
 
 
 Configuring Parallelism
 Configure Parallelism in Ansible Using Forks
+- In theory, Ansible could connect to all hosts in the play simultaneously for each task.
+
+- The maximum number of simultaneous connections that Ansible makes is controlled by the forks
+parameter in the Ansible configuration file.
+
+Ansible runs the next task across all the managed
+hosts in groups of five hosts at a time. Ansible does this with each task in turn until the play ends.
+
+default setting for forks is conservative.
+
+can usually set the forks parameter to a much higher
+value, possibly closer to 100, and realize performance improvements.
+
+ansible-navigator run command offers the -f or --forks option
+
+
+
 Running Batches of Hosts Through the Entire Play
+- The play processes each batch of hosts in sequence.
+- Ansible runs the play on two managed hosts simultaneously until all  managed hosts have been updated.
+- Ansible first runs the tasks in the play on the first two
+managed hosts. If any of those hosts notifies a handler, then Ansible runs the handler. When
+the play is complete on those two managed hosts, Ansible repeats the process on the next two
+managed hosts.
+
+demo vs forks
+
+This means that if an entire batch fails, then the play fails, which
+causes the entire playbook run to fail.
+
+In the previous scenario with the serial parameter set to 2, if something is wrong
+and the play fails for the first two processed hosts, then the playbook aborts and
+the play does not run on the remaining three hosts.
+
+The serial keyword can also be specified as a percentage. This percentage is applied to the
+total number of hosts in the play to determine the rolling update batch size
+
+
+- ge 20
+- lecture 25
 
 Managing Rolling Updates
 Controlling Batch Size
-Setting a Fixed Batch Size
-Setting Batch Size as a Percentage
-Setting Batch Sizes to Change During the Play
-Aborting the Play
-Specifying Failure Tolerance
-Running a Task Once
 
+Setting a Fixed Batch Size
+- serial
+directive specifies how many hosts should be in each batch. Ansible processes each batch of hosts
+through the play before starting the next batch
+
+Setting Batch Size as a Percentage
+
+Setting Batch Sizes to Change During the Play
+ - can also specify a percentage for the value of the serial directive:
+ - - Ansible applies the percentage to the total number of hosts in the host group
+ 
+Aborting the Play
+- By default, Ansible tries to get as many hosts to complete a play as possible. If a task fails for a
+host, the host is dropped from the play, but Ansible continues to run the remaining tasks for other
+hosts.
+
+
+
+- you use the serial directive to organize hosts into batches, then if all hosts in the
+current batch fail, Ansible stops the play for all remaining hosts, not just the remaining hosts in the
+current batch
+
+- Ansible keeps a list of the active servers for each batch in the ansible_play_batch variable.
+
+
+
+Specifying Failure Tolerance
+- Ansible only halts play execution when all hosts in a batch fail.
+
+- demo 
+
+- The first batch contains two hosts. Because 30% of 2 is 0.6, a single host failure causes execution
+to stop.
+If both hosts in the first batch succeed, then Ansible continues with the second batch of 10 hosts.
+Because 30% of 10 is 3, more than three host failures must occur for Ansible to stop playbook
+execution. If three or fewer hosts experience errors in the second batch, Ansible continues with
+the third batch.
+To implement a "fail fast" strategy, set the max_fail_percentage to zero.
+
+
+
+Running a Task Once
+- run a task once for an entire batch of hosts rather than once for each host in the batch
+demo
+
+Setting the run_once: true directive causes a task to run once for each batch.
+If you only need to run a task once for all hosts in a play, and the play has multiple
+batches, then you can add the following conditional statement to the task:
+when: inventory_hostname == ansible_play_hosts[0]
+
+
+- ge 15
+- lab 20
