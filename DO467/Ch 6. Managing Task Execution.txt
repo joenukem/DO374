@@ -13,8 +13,7 @@ Running Selected Tasks
 Tagging Ansible Resources
 
 Managing Tagged Resources
-- ansible-navigator command to run tasks with a specific tag, using the --tags
-option
+- ansible-navigator command to run tasks with a specific tag, using the --tags option
 - use skip tasks with a specific tag, using the --skip-tags option.
 
 Running Tasks with Specific Tags
@@ -25,12 +24,13 @@ Skipping Tasks with Specific Tags
 ansible-navigator run  -m stdout main.yml -i inventory --skip-tags webserver
 
 Combining Tags to Run Multiple Tasks
--  can associate multiple tags with the --tags and --skip-tags options using a comma-separated list:
-- ansible-navigator run \  -m stdout main.yml -i inventory --tags install,setup
+- can associate multiple tags with the --tags and --skip-tags options using a comma-separated list:
+- ansible-navigator run  -m stdout main.yml -i inventory --tags install,setup
 
 Listing Tags in a Playbook
 - list all tags that exist in a playbook, pass the --list-tags option to the ansible- navigator command. For example:
 - ansible-navigator run  -m stdout playbook.yml -i inventory --list-tags
+irqo0
 
 Assigning Special Tags
 - Ansible has a special tag that can be assigned in a playbook: always. A resource tagged always
