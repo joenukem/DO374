@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+    - debug: msg="The sky in your world is {{ color | default('blue') }}"
+    - debug: msg="Your number is {{ mynumber | default('1')  }}. The winning number is {{  '{:0=13}'.format(range(0, 9999999999999) | random)  }}  Try again"
+
